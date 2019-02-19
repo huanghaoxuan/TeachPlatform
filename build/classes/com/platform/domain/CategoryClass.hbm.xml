@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<!-- 建立类与表映射 -->
+	<class name="com.platform.domain.CategoryClass" batch-size="10" table="CategoryClass">
+		<!-- 建立类中的属性与表中主键对应 -->
+		<id name="categoryClass_id" column="categoryClass_id">
+			<generator class="native" />
+		</id>
+		<!-- 建立类中普通的属性与表中字段对应 -->
+
+		<property name="categoryClass_category" column="categoryClass_category" />
+		<property name="categoryClass_icon" column="categoryClass_icon" />
+		<property name="categoryClass_name" column="categoryClass_name" />
+		<property name="categoryClass_introduce" column="categoryClass_introduce" />
+		<property name="categoryClass_teacher" column="categoryClass_teacher" />
+
+        <many-to-one name="user" class="com.platform.domain.User" column="categoryClass_user_id" cascade="save-update" />
+	  
+	   <set name="users2" table="category_user" cascade="save-update,delete" inverse="true">           
+            <key column="categoryClass_id"/>            
+            <many-to-many class="com.platform.domain.User" column="user_id"/>
+        </set>
+        
+        <set name="courses" cascade="all" inverse="true">
+            <key column="course_categoryClass_id"/>
+            <one-to-many class="com.platform.domain.Course"/>
+        </set>
+	</class>
+</hibernate-mapping>

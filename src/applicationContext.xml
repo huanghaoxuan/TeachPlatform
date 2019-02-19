@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns="http://www.springframework.org/schema/beans"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/tx 
+        http://www.springframework.org/schema/tx/spring-tx.xsd">
+        
+        
+    <context:component-scan base-package="com.platform" />
+    <!-- Spring整合Hibernate -->
+    
+    <!-- 引入外部属性文件=============================== -->
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+    
+    <bean class="com.mchange.v2.c3p0.ComboPooledDataSource" id="dataSource">
+           <property name="driverClass" value="${driverClass}"></property>
+            <property name="jdbcUrl" value="${jdbcUrl}"></property>
+            <property name="user" value="${user}"></property>
+            <property name="password" value="${password}"></property>
+            <property name="minPoolSize" value="${minPoolSize}"></property>
+            <property name="maxPoolSize" value="${maxPoolSize}"></property>
+            <property name="initialPoolSize" value="${initialPoolSize}"></property>
+        </bean>
+    
+    <!-- 引入Hibernate的配置的信息=============== -->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <!-- 注入连接池 -->
+        <property name="dataSource" ref="dataSource"/>
+        <!-- 配置Hibernate的相关属性 -->
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.format_sql">true</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+            </props>
+        </property>
+        
+        
+    <!-- 设置映射文件 -->
+        <property name="mappingResources">
+            <list>
+                <value>com/platform/domain/User.hbm.xml</value>
+                <value>com/platform/domain/FileMain.hbm.xml</value>
+                <value>com/platform/domain/Course.hbm.xml</value>
+                <value>com/platform/domain/TeachVideo.hbm.xml</value>
+                <value>com/platform/domain/Category.hbm.xml</value>
+                <value>com/platform/domain/CategoryClass.hbm.xml</value>
+            </list>
+        </property>
+    </bean>
+   
+   
+   <!-- 配置事务管理器 -->
+    <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    
+
+   
+    <!-- 开启注解事务 -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+    <context:component-scan base-package="com.platform" />
+    
+    
+    
+    
+    
+    
+    <!-- ***************************************登录    注册***************************************** -->
+    <!-- ****************************************************************************************** -->
+    <bean id="userAction" class="com.platform.web.action.UserAction" scope="prototype">
+        <property name="userService" ref="userService"></property>
+        <property name="courseAction" ref="courseAction"></property>
+    </bean>
+    
+    <bean id="userService" class="com.platform.service.impl.UserServiceImpl" scope="prototype">
+        <property name="UserDAO" ref="UserDAO"></property>
+    </bean>
+    
+    <bean id="UserDAO" class="com.platform.DAO.impl.UserDAOImpl" scope="prototype">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    
+    <bean id="eMailAction" class="com.platform.web.action.EMailAction" scope="prototype">
+    <property name="userService" ref="userService"></property>
+    </bean>
+    
+    <!-- ****************************************************************************************** -->
+    <!-- ****************************************************************************************** -->
+    
+    
+    <!-- ***************************************主页课程查询***************************************** -->
+    <!-- ****************************************************************************************** -->
+    <bean id="courseAction" class="com.platform.web.action.CourseAction" scope="prototype">
+        <property name="courseService" ref="courseService"></property>
+        <property name="teachVideoService" ref="teachVideoService"></property>
+        <property name="categoryService" ref="categoryService"></property>
+        <property name="categoryClassService" ref="categoryClassService"></property>
+    </bean>
+    
+    <bean id="categoryAction" class="com.platform.web.action.CategoryAction" scope="prototype">
+        <property name="categoryService" ref="categoryService"></property>
+    </bean>
+    
+    <bean id="categoryClassAction" class="com.platform.web.action.CategoryClassAction" scope="prototype">
+        <property name="categoryClassService" ref="categoryClassService"></property>
+        <property name="userService" ref="userService"></property>
+    </bean>
+    
+    <bean id="courseService" class="com.platform.service.impl.CourseServiceImpl" scope="prototype">
+        <property name="courseDAO" ref="courseDAO"></property>
+    </bean>
+    
+    <bean id="courseDAO" class="com.platform.DAO.impl.CourseDAOImpl" scope="prototype">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    
+    <bean id="categoryService" class="com.platform.service.impl.CategoryServiceImpl" scope="prototype">
+        <property name="categoryDAO" ref="categoryDAO"></property>
+    </bean>
+    
+    <bean id="categoryDAO" class="com.platform.DAO.impl.CategoryDAOImpl" scope="prototype">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    
+    <bean id="categoryClassService" class="com.platform.service.impl.CategoryClassServiceImpl" scope="prototype">
+        <property name="categoryClassDAO" ref="categoryClassDAO"></property>
+    </bean>
+    
+    <bean id="categoryClassDAO" class="com.platform.DAO.impl.CategoryClassDAOImpl" scope="prototype">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    
+    <!-- ****************************************************************************************** -->
+    <!-- ****************************************************************************************** -->
+    
+    
+    
+    <!-- ***************************************上传    下载***************************************** -->
+    <!-- ****************************************************************************************** -->
+    
+    
+    <bean id="fileMainAction" class="com.platform.web.action.FileMainAction" scope="prototype">
+        <property name="fileService" ref="fileService"></property>
+        <property name="teachVideoService" ref="teachVideoService"></property>
+    </bean>
+    
+    <bean id="fileService" class="com.platform.service.impl.FileServiceImpl" scope="prototype">
+        <property name="fileDAO" ref="fileDAO"></property>
+    </bean>
+    
+    <bean id="fileDAO" class="com.platform.DAO.impl.FileDAOImpl" scope="prototype">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <!-- ****************************************************************************************** -->
+    <!-- ****************************************************************************************** -->
+    
+    
+    
+    <!-- ***************************************视频    查询***************************************** -->
+    <!-- ****************************************************************************************** -->
+    
+    <bean id="teachVideoService" class="com.platform.service.impl.TeachVideoServiceImpl" scope="prototype">
+        <property name="teachVideoDAO" ref="teachVideoDAO"></property>
+    </bean>
+    
+    <bean id="teachVideoDAO" class="com.platform.DAO.impl.TeachVideoDAOImpl" scope="prototype">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    
+    <bean id="teachVideoAction" class="com.platform.web.action.TeachVideoAction" scope="prototype">
+        <property name="teachVideoService" ref="teachVideoService"></property>
+        <property name="courseService" ref="courseService"></property>
+    </bean>
+    <!-- ****************************************************************************************** -->
+    <!-- ****************************************************************************************** -->
+    
+</beans>
+

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+    "http://struts.apache.org/dtds/struts-2.5.dtd">
+<struts>
+    <!-- 配置Struts2的常量 -->
+    <constant name="struts.enable.DynamicMethodInvocation" value="true" />
+    <constant name="struts.devMode" value="true"></constant>
+    <package name="MyPackage.fileMain" namespace="/" extends="MyPackage,json-default">
+        
+        <global-allowed-methods>regex:.*</global-allowed-methods>
+        <action name="fileMainAddScore" class="com.platform.web.action.FileMainAction" method="addScore">
+            
+            <result name="addScore">/function/video.teachVideo.main/homework.jsp</result>
+        </action>
+        
+        <action name="fileMainUpload" class="com.platform.web.action.FileMainAction" method="upload">
+
+            <result type="json">
+                <param name="root">dataMap</param>
+                <!-- 指定是否序列化空的属性 -->  
+                <!-- <param name="excludeNullProperties">true</param> -->
+                <!-- 这里指定将要从dataMap中排除那些属性，这些排除的属性将不被序列化，一半不与上边的参数配置同时出现 -->
+                <!-- <param name="excludeProperties">success</param> -->
+            </result>
+        </action>
+        <action name="fileMain_*" class="com.platform.web.action.FileMainAction" method="{1}">
+        <result name="success">/function/video.teachVideo.main/courseware.jsp</result>
+        <result name="deleteCourseware">/function/video.teachVideo.main/courseware.jsp</result>
+        <result name="deleteHomework">/function/video.teachVideo.main/homework.jsp</result>
+        <result name="download" type="stream">
+        
+        <param name="contentType">application/octet-stream</param>
+        
+        <param name="bufferSize">4096</param>
+        </result>
+        </action>
+        
+        
+    </package>
+
+</struts>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<!-- 建立类与表映射 -->
+	<class name="com.platform.domain.Category" batch-size="10" table="Categorys">
+		<!-- 建立类中的属性与表中主键对应 -->
+		<id name="category_id" column="category_id">
+			<generator class="native" />
+		</id>
+		<!-- 建立类中普通的属性与表中字段对应 -->
+
+		<property name="category_name" column="category_name" />
+
+
+	</class>
+</hibernate-mapping>

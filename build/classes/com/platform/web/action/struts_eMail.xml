@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+    "http://struts.apache.org/dtds/struts-2.5.dtd">
+<struts>
+    <!-- 配置Struts2的常量 -->
+    <constant name="struts.enable.DynamicMethodInvocation" value="true" />
+    <constant name="struts.devMode" value="true"></constant>
+    <package name="MyPackage.eMail" namespace="/" extends="MyPackage">
+        
+        <global-allowed-methods>regex:.*</global-allowed-methods>
+        
+        
+        <action name="eMail_*" class="com.platform.web.action.EMailAction" method="{1}">
+            <result name="success">/homePage/homePage.jsp</result>
+      
+        </action> 
+    </package>
+
+</struts>

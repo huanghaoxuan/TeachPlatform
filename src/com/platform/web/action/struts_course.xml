@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+    "http://struts.apache.org/dtds/struts-2.5.dtd">
+<struts>
+    <!-- 配置Struts2的常量 -->
+    <constant name="struts.enable.DynamicMethodInvocation" value="true" />
+    <constant name="struts.devMode" value="true"></constant>
+    <package name="MyPackage.course" namespace="/" extends="MyPackage">
+        
+        <global-allowed-methods>regex:.*</global-allowed-methods>
+        
+        <action name="courseAddCatalog" class="com.platform.web.action.CourseAction" method="addCatalog">
+            <interceptor-ref name="defaultStack"></interceptor-ref>
+            <interceptor-ref name="token"></interceptor-ref>
+            <result name="invalid.token">/function/PersonSpace/personSpace.jsp</result>
+            <result name="newCatalog">/function/PersonSpace/personSpace.jsp</result>
+        </action>
+        <action name="courseDeleteCatalog" class="com.platform.web.action.CourseAction" method="deleteCatalog">
+            <interceptor-ref name="defaultStack"></interceptor-ref>
+            <interceptor-ref name="token"></interceptor-ref>
+            <result name="invalid.token">/function/PersonSpace/personSpace.jsp</result>
+            <result name="deleteCatalog">/function/PersonSpace/personSpace.jsp</result>
+        </action>
+        <action name="course_*" class="com.platform.web.action.CourseAction" method="{1}">
+            <result name="success">/function/search/search.jsp</result>
+            <result name="video">/function/video/video.jsp</result>
+            <result name="video2">/function/video/video2.jsp</result>
+            <result name="teachVideo">/function/video.teachVideo/teachVideo.jsp</result>
+            <result name="newCatalog">/function/PersonSpace/personSpace.jsp</result>
+         
+        </action> 
+    </package>
+
+</struts>

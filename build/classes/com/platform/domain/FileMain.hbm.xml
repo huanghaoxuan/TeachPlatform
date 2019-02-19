@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<!-- 建立类与表映射 -->
+	<class name="com.platform.domain.FileMain" batch-size="10" table="Files">
+		<!-- 建立类中的属性与表中主键对应 -->
+		<id name="file_id" column="file_id">
+			<generator class="native" />
+		</id>
+		<!-- 建立类中普通的属性与表中字段对应 -->
+
+		<property name="fileFileName" column="fileFileName" />
+		<property name="file_path" column="file_path" />
+		<property name="file_flag" column="file_flag" />
+		<property name="file_score" column="file_score" />
+		<property name="file_assess" column="file_assess" />
+		
+		
+		<many-to-one name="user" class="com.platform.domain.User" column="file_user_id" cascade="save-update"/>
+		<many-to-one name="teachVideo" class="com.platform.domain.TeachVideo" column="file_teachVideo_id" cascade="save-update"/>
+	</class>
+</hibernate-mapping>

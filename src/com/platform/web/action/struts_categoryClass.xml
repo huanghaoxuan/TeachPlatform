@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+    "http://struts.apache.org/dtds/struts-2.5.dtd">
+<struts>
+    <!-- 配置Struts2的常量 -->
+    <constant name="struts.enable.DynamicMethodInvocation" value="true" />
+    <constant name="struts.devMode" value="true"></constant>
+    <package name="MyPackage.categoryClass" namespace="/" extends="MyPackage">
+        
+        <global-allowed-methods>regex:.*</global-allowed-methods>
+        
+        <action name="categoryClassAddClass" class="com.platform.web.action.CategoryClassAction" method="addClass">
+            <interceptor-ref name="defaultStack"></interceptor-ref>
+            <interceptor-ref name="token"></interceptor-ref>
+            <result name="invalid.token">/function/PersonSpace/personSpace.jsp</result>
+            <result name="newClass">/function/PersonSpace/personSpace.jsp</result>
+        </action>
+        <action name="categoryClassDeleteClass" class="com.platform.web.action.CategoryClassAction" method="deleteClass">
+            <interceptor-ref name="defaultStack"></interceptor-ref>
+            <interceptor-ref name="token"></interceptor-ref>
+            <result name="invalid.token">/function/PersonSpace/personSpace.jsp</result>
+            <result name="newClass">/function/PersonSpace/personSpace.jsp</result>
+        </action>
+  
+        <action name="categoryClass_*" class="com.platform.web.action.CategoryClassAction" method="{1}">
+
+        <result name="success">/function/search/search_categoryClass.jsp</result>
+        <result name="newClass">/function/PersonSpace/personSpace.jsp</result>
+        <result name="video">/function/video/video.jsp</result>
+        <result name="video2">/function/video/video2.jsp</result>
+        <result name="newCatalog">/function/PersonSpace/newClass2.jsp</result>
+        <result name="deleteCatalog">/function/PersonSpace/deleteClass2.jsp</result>
+        <result name="newContent">/function/PersonSpace/newClass3.jsp</result>
+        <result name="deleteContent">/function/PersonSpace/deleteClass3.jsp</result>
+
+        
+        </action>
+    </package>
+
+</struts>

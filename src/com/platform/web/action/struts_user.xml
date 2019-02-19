@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+    "http://struts.apache.org/dtds/struts-2.5.dtd">
+<struts>
+    <!-- 配置Struts2的常量 -->
+    <constant name="struts.enable.DynamicMethodInvocation" value="true" />
+    <constant name="struts.devMode" value="true"></constant>
+    <package name="MyPackage.user" namespace="/" extends="MyPackage">
+        
+        <global-allowed-methods>regex:.*</global-allowed-methods>
+        
+        <action name="userRegister" class="com.platform.web.action.UserAction" method="register">
+         <interceptor-ref name="defaultStack"></interceptor-ref>
+            <interceptor-ref name="token"></interceptor-ref>
+            <result name="invalid.token">/login/login.jsp</result>
+        </action> 
+        <action name="user_*" class="com.platform.web.action.UserAction" method="{1}">
+            <result name="success">/homePage/homePage.jsp</result>
+            <result name="personSpace">/function/PersonSpace/personSpace.jsp</result>
+         
+        </action>
+        <action name="newlogin" class="com.platform.web.action.UserAction" method="newlogin">
+        </action>
+    </package>
+
+</struts>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+	"http://struts.apache.org/dtds/struts-2.5.dtd">
+<struts>
+	<!-- 配置Struts2的常量 -->
+	<constant name="struts.enable.DynamicMethodInvocation" value="true" />
+	<constant name="struts.devMode" value="true" />
+	<constant name="struts.multipart.maxSize" value="10485760000"/>
+
+    
+    <package name="MyPackage" namespace="/" extends="struts-default">
+        <global-results>
+        
+            <result name="login" type="redirect">/login/login.jsp</result>
+            
+        </global-results>
+        <global-allowed-methods>regex:.*</global-allowed-methods>    
+    </package>
+    <include file="com/platform/web/action/struts_user.xml"></include>
+    <include file="com/platform/web/action/struts_updownload.xml"></include>
+    <include file="com/platform/web/action/struts_course.xml"></include>
+    <include file="com/platform/web/action/struts_teachVideo.xml"></include>
+    <include file="com/platform/web/action/struts_categoryClass.xml"></include>
+    <include file="com/platform/web/action/struts_fileMain.xml"></include>
+    <include file="com/platform/web/action/struts_eMail.xml"></include>
+</struts>
